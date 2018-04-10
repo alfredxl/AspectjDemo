@@ -57,51 +57,33 @@ apply plugin: 'android-aspectjx'
 #### Pointcut语法:
 |符号|描述|
 | ----- |:-----:|
-|*|表示任何数量的字符,除了(.)|
+|\*|表示任何数量的字符,除了(.)|
 |.. |表示任何数量的字符包括任何数量的(.)|
 |+|描述指定类型的任何子类或者子接口|
 |!|一 元操作符:|
 |\|\|、\&\& |二 元操作符|
 
-主要例子:
-例子
-解析
-*Account 
-使用Account名称结束的类型,如SavingsAccount和CheckingAccount
-java.*.Date 
-类型Date在任何直接的java子包中,如java.util.Date和java.sql.Date
-java..* 
-任何在java包或者所有子包中的类型,如java.awt和java.util或者java.awt.event 和java.util.logging
-javax..*Model+ 
-所有javax包或者子包中以Model结尾的类型和其所有子类,如TableModel,TreeModel。
-!vector 
-所有除了Vector的类型
-Vector || Hashtable 
-Vector或者Hashtable类型
-java.util.RandomAccess+ 
-RandomAccess的所有子类
-void Account.set*(*) 
-Account中以set开头,并且只有一个参数类型，无返回值的方法
-void Account.*()  
-Account中所有的没有参数的void 方法
-public * Account.*()  
-Account中所有没有参数的public 方法
-public * Account.*(..)  
-Account中所有的public 方法
-* Account.*(..)  
-Account中的所有方法,包括private方法
-!public * Account.*(..)  
-所有的非public 方法
-* Account+.*(..)  
-所有的方法,包括子类的方法
-* java.io.Reader.read(..) 
-所有的read方法
-* java.io.Reader.read(char[],..) 
-所有以read(char[])开始的方法,包括read(char[])和read(char[],int,int)
-* javax..*.add*Listener(EventListener+)  
-命名以add开始,以Listener结尾的方法,参数中为EventListener或子类
-* *.*(..) throws RemoteException  
-抛出RemoteException的所有方法
+#### 主要例子:
+|例子|解析|
+| ----- |:-----:|
+|\*Account |使用Account名称结束的类型,如SavingsAccount和CheckingAccount|
+|java.\*.Date |类型Date在任何直接的java子包中,如java.util.Date和java.sql.Date|
+|java..\* |任何在java包或者所有子包中的类型,如java.awt和java.util或者java.awt.event 和java.util.logging|
+|javax..\*Model+ |所有javax包或者子包中以Model结尾的类型和其所有子类,如TableModel,TreeModel。|
+|!vector |所有除了Vector的类型|
+|Vector \|\| Hashtable |Vector或者Hashtable类型|
+|java.util.RandomAccess+ |RandomAccess的所有子类|
+|void Account.set\*(\*) |Account中以set开头,并且只有一个参数类型，无返回值的方法|
+|void Account.\*() |Account中所有的没有参数的void 方法|
+|public \* Account.\*()  |Account中所有没有参数的public 方法|
+|public \* Account.\*(..)  |Account中所有的public 方法|
+|\* Account.\*(..)  |Account中的所有方法,包括private方法|
+|!public \* Account.\*(..) |所有的非public 方法|
+|\* Account+.\*(..)  |所有的方法,包括子类的方法|
+|\* java.io.Reader.read(..)|所有的read方法|
+|\* java.io.Reader.read(char[],..) |所有以read(char[])开始的方法,包括read(char[])和read(char[],int,int)|
+|\* javax..\*.add\*Listener(EventListener+)  |命名以add开始,以Listener结尾的方法,参数中为EventListener或子类|
+|\* \*.\*(..) throws RemoteException  |抛出RemoteException的所有方法|
 
 Pattern规则
 名称
