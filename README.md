@@ -1,27 +1,20 @@
-android中AOP编程的应用 
-==
+# android中AOP编程的应用
 
-1、AOP的概念：（摘自[维基百科](https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E4%BE%A7%E9%9D%A2%E7%9A%84%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1)）
---
+## 1、AOP的概念：
+面向侧面的程序设计（aspect-oriented programming，AOP，又译作面向方面的程序设计、观点导向编程、剖面导向程序设计）是计算机科学中的一个术语，指一种程序设计范型。该范型以一种称为侧面（aspect，又译作方面）的语言构造为基础，侧面是一种新的模块化机制，用来描述分散在对象、类或函数中的横切关注点（crosscutting concern）。侧面的概念源于对面向对象的程序设计的改进，但并不只限于此，它还可以用来改进传统的函数。与侧面相关的编程概念还包括元对象协议、主题（subject）、混入（mixin）和委托。（摘自[维基百科](https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E4%BE%A7%E9%9D%A2%E7%9A%84%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1)）<br>
 
-面向侧面的程序设计（aspect-oriented programming，AOP，又译作面向方面的程序设计、观点导向编程、剖面导向程序设计）是计算机科学中的一个术语，指一种程序设计范型。该范型以一种称为侧面（aspect，又译作方面）的语言构造为基础，侧面是一种新的模块化机制，用来描述分散在对象、类或函数中的横切关注点（crosscutting concern）。侧面的概念源于对面向对象的程序设计的改进，但并不只限于此，它还可以用来改进传统的函数。与侧面相关的编程概念还包括元对象协议、主题（subject）、混入（mixin）和委托。<br>
-
-2、AOP在Android中的应用点：
---
-
+## 2、AOP在Android中的应用点：
 aop是一种面向切面的编程思想，目的在于从切面插入自己需要的代码，在不破坏、不耦合原有代码逻辑的基础上，实现相关的功能，在Android中的应用场景非常丰富，如：数据统计、日志记录、用户行为统计、应用性能统计、数据校验、行为拦截，等等应用场景。
 
-3、在Android中，如何实现AOP编程：
---
+## 3、在Android中，如何实现AOP编程：
 
-aop编程的实现技术方案有很以下几种：<br>
+### aop编程的实现技术方案有很以下几种：<br>
 * 在编码期切入；<br>
 * 在编译期修改源代码；<br>
 * 在运行期字节码加载前修改字节码；<br>
 * 在运行期字节码加载后动态创建代理类的字节码；<br>
 
-aop各种实现技术方案对比：
-
+### aop各种实现技术方案对比：
 |类别        | 原理           | 优点  |缺点  |
 | ------------- |:-------------:| -----:| -----:|
 | 在编码期切入| 通过静态代理切入 | 业务逻辑跟切入代码分离 |针对性强 |
@@ -29,16 +22,16 @@ aop各种实现技术方案对比：
 | 在运行期字节码加载前修改字节码 | 自定义类加载器，在加载类的时候对字节码进行修改  | 可以对所有类进行织入|  |
 | 在运行期字节码加载后动态创建代理类的字节码 | 类加载后，为接口生成动态代理（动态代理）、或者为<br>目标类动态生成子类（动态字节码生成（CGLIB)）  | (动态代理)相对于静态AOP更加灵活<br>(CGLIB)没有接口也可以织入| (动态代理)<br>切入的关注点需要实现接口。<br>对系统有一点性能影响<br>(CGLIB)<br>扩展类的实例方法为final时，则无法进行织 |
 
-通过调研和对比， 在Android中，目前比较成熟的方案：
+### 通过调研和对比， 在Android中，目前比较成熟的方案：
 * 静态代理；
 * Aspectj框架： 编译器对字节码进行切入修改。
 
-4、Aspectj框架入门介绍：
+## 4、Aspectj框架入门介绍：
 ### 环境搭建:
-aspectj的环境搭建步骤比较复杂，这里参见了https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx项目(该插件目前有些问题未修复)，对gradle插件进行了封装；
-使用步骤：
-在项目的build.gradle文件中加入如下代码:
-
+aspectj的环境搭建步骤比较复杂，这里参考了[Hujiang的项目](https://github.com/HujiangTechnology/gradle_plugin_android_aspectjx)，对gradle插件进行了修改封装；<br>
+使用步骤：<br>
+> 在项目的build.gradle文件中加入如下代码:<br>
+```groovy
 repositories {
     ...
     maven { url 'https://jitpack.io' }
@@ -47,33 +40,28 @@ dependencies {
     ...
  classpath 'com.github.alfredxl:android-aspectj:0.9.0'
 }
-在application模块中的build.gradle文件中加入:
+```
+> 在application模块中的build.gradle文件中加入:
+```groovy
 apply plugin: 'android-aspectjx'
-aspectj介绍: (详见：https://www.eclipse.org/aspectj/doc/released/adk15notebook/index.html)
-aspectj术语
-名称
-描述
-JPoint
-代码可注入的点，比如一个方法的调用处或者方法内部、“读、写”变量等。
-Pointcut
-用来描述 JPoint 注入点的一段表达式，比如：调用 Animal 类 fly 方法的地方，call(* Animal.fly(..))。
-Advice
-常见的有 Before、After、Around 等，表示代码执行前、执行后、替换目标代码，也就是在 Pointcut 何处注入代码。
-Aspect
-Pointcut 和 Advice 合在一起称作 Aspect。
-Pointcut语法:
-符号
-描述
-*
-表示任何数量的字符,除了(.)
-.. 
-表示任何数量的字符包括任何数量的(.)
-+
-描述指定类型的任何子类或者子接口
-!
-一 元操作符:
-||、&& 
-二 元操作符
+```
+[aspectj介绍](详见：https://www.eclipse.org/aspectj/doc/released/adk15notebook/index.html)
+### aspectj术语
+|名称|描述|
+| ----- |:-----:|
+|JPoint|代码可注入的点，比如一个方法的调用处或者方法内部、“读、写”变量等。|
+|Pointcut|用来描述 JPoint 注入点的一段表达式，比如：调用 Animal 类 fly 方法的地方，call(* Animal.fly(..))。|
+|Advice|常见的有 Before、After、Around 等，表示代码执行前、执行后、替换目标代码，也就是在 Pointcut 何处注入代码。|
+|Aspect|Pointcut 和 Advice 合在一起称作 Aspect。|
+
+### Pointcut语法:
+|符号|描述|
+| ----- |:-----:|
+|*|表示任何数量的字符,除了(.)|
+|.. |表示任何数量的字符包括任何数量的(.)|
+|+|描述指定类型的任何子类或者子接口|
+|!|一 元操作符:|
+|||、&& |二 元操作符|
 
 主要例子:
 例子
