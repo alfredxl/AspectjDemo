@@ -269,4 +269,4 @@ long startTime = System.currentTimeMillis();
 该切入点的效果为，在使用了ActivityOnCreate 注解的目标方法执行前进行拦截并实行相关操作
 
 ## 总结：
-本篇介绍，对AOP及Aspectj的介绍仅仅只涉及到到入门知识，更输入的学习，欢迎大家一起加入。
+本篇介绍，对AOP及Aspectj的介绍仅仅只涉及到到入门知识，更深入的学习，欢迎大家一起加入@QQ32038305。
