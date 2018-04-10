@@ -45,8 +45,8 @@ dependencies {
 ```groovy
 apply plugin: 'android-aspectjx'
 ```
-[aspectj介绍](详见：https://www.eclipse.org/aspectj/doc/released/adk15notebook/index.html)
-### aspectj术语
+### [aspectj介绍](详见：https://www.eclipse.org/aspectj/doc/released/adk15notebook/index.html)
+#### aspectj术语
 |名称|描述|
 | ----- |:-----:|
 |JPoint|代码可注入的点，比如一个方法的调用处或者方法内部、“读、写”变量等。|
@@ -54,14 +54,14 @@ apply plugin: 'android-aspectjx'
 |Advice|常见的有 Before、After、Around 等，表示代码执行前、执行后、替换目标代码，也就是在 Pointcut 何处注入代码。|
 |Aspect|Pointcut 和 Advice 合在一起称作 Aspect。|
 
-### Pointcut语法:
+#### Pointcut语法:
 |符号|描述|
 | ----- |:-----:|
 |*|表示任何数量的字符,除了(.)|
 |.. |表示任何数量的字符包括任何数量的(.)|
 |+|描述指定类型的任何子类或者子接口|
 |!|一 元操作符:|
-|||、&& |二 元操作符|
+|\|\|、\&\& |二 元操作符|
 
 主要例子:
 例子
