@@ -85,77 +85,51 @@ apply plugin: 'android-aspectjx'
 |\* javax..\*.add\*Listener(EventListener+)  |命名以add开始,以Listener结尾的方法,参数中为EventListener或子类|
 |\* \*.\*(..) throws RemoteException  |抛出RemoteException的所有方法|
 
-Pattern规则
-名称
-描述
-MethodPattern :  
-[!] [@Annotation] [public,protected,private] [static] [final] 返回值类型 [类名.]方法名(参数类型列表) [throws 异常类型]
-ConstructorPattern: 
- [!] [@Annotation] [public,protected,private] [final] [类名.]new(参数类型列表) [throws 异常类型]
-FieldPattern:  
-[!] [@Annotation] [public,protected,private] [static] [final] 属性类型 [类名.]属性名
+#### Pattern规则
+|名称|描述|
+| ----- |:-----:|
+|MethodPattern :  |[!] [@Annotation] [public,protected,private] [static] [final] 返回值类型 [类名.]方法名(参数类型列表) [throws 异常类型]|
+|ConstructorPattern: | [!] [@Annotation] [public,protected,private] [final] [类名.]new(参数类型列表) [throws 异常类型]|
+|FieldPattern:  |[!] [@Annotation] [public,protected,private] [static] [final] 属性类型 [类名.]属性名|
+|TypePattern:  |其他 Pattern 涉及到的类型规则也是一样，可以使用 '!'、''、'..'、'+'，'!' 表示取反，'' 匹配除 . 外的所有字符串，'*' 单独使用事表示匹配任意类型，'..' 匹配任意字符串，'..' 单独使用时表示匹配任意长度任意类型，'+' 匹配其自身及子类，还有一个 '...'表示不定个数|
 
-TypePattern:  
-其他 Pattern 涉及到的类型规则也是一样，可以使用 '!'、''、'..'、'+'，'!' 表示取反，'' 匹配除 . 外的所有字符串，
-'*' 单独使用事表示匹配任意类型，'..' 匹配任意字符串，'..' 单独使用时表示匹配任意长度任意类型，'+' 匹配其自身及子类，
-还有一个 '...'表示不定个数
-JPoint语法:
-语法
-描述
-execution(MethodPattern)
-方法执行
-call(MethodPattern)
-方法调用
-execution(ConstructorPattern)
-构造函数执行
-call(ConstructorPattern)
-构造函数被调用
-staticinitialization(TypePattern)
-static 块初始化
-get(FieldPattern)
-属性读操作
-set(FieldPattern)
-属性写操作
-handler(TypePattern)
-异常处理
-adviceexecution()
-所有 Advice 执行
-间接选择JPonit语法：
-语法
-描述
-within(TypePattern):  
-TypePattern表示某个包或者类中包含的JPoint，可以使用通配符；
-withincode(ConstructorPattern|MetodPattern):  
-表示某个类的构造函数或方法中涉及到的JPoint；
-cflow(pointcuts): 
-比如cflow(call Animal.fly): 标识调用Animal.fly函数时所包含的JPoint，包含fly的call这个JPoint本身；
-cflowbelow(pointcuts): 
-比如cflowbelow(call Animal.fly): 标识调用Animal.fly函数时所包含的JPoint，但不包含fly的call这个JPoint本身；
-this(Type): 
-JPoint所在的对象是否满足instanceof Type条件（注：不能使用通配符，与within类似，但within包含内部类， 而this不包含)；
-target(Type): 
-与this相对，表示Pointcut所在对象是否满足instanceof Type条件(注：不能使用通配符);
-args(TypeSignature):
-Constructor Signature|Method Signature的参数类型，比如args(int,..)表示第一个参数是int, 后面的参数个数和类型不限；
-if(BooleanExpression): 
-满足表达式的 Join Point，表达式只能使用静态属性、Pointcuts 或 Advice 暴露的参数、thisJoinPoint 对象。
+#### JPoint语法:
+|语法|描述|
+| ----- |:-----:|
+|execution(MethodPattern)|方法执行|
+|call(MethodPattern)|方法调用|
+|execution(ConstructorPattern)|构造函数执行|
+|call(ConstructorPattern)|构造函数被调用|
+|staticinitialization(TypePattern)|static 块初始化|
+|get(FieldPattern)|属性读操作|
+|set(FieldPattern)|属性写操作|
+|handler(TypePattern)|异常处理|
+|adviceexecution()|所有 Advice 执行|
 
-Advice语法:
-语法
-描述
-Before(Pointcut):
- 在执行JPoint之前；
-After(Pointcut): 
-在执行JPonit之后;
-Aroud(Pointcut): 
-替换原需要执行的代码，如需执行原代码，需调用joinPoint.proceed()方法，不可与Before和After同时使用
-AfterReturning(Pointcut): 
-JPoint 为方法调用且正常 return 时，不指定返回类型时匹配所有类型
-AfterThrowing(Pointcut): 
-JPoint 为方法调用且抛出异常时，不指定异常类型时匹配所有类型
+#### 间接选择JPonit语法：
+|语法|描述|
+| ----- |:-----:|
+|within(TypePattern):  |TypePattern表示某个包或者类中包含的JPoint，可以使用通配符；|
+|withincode(ConstructorPattern|MetodPattern):  |表示某个类的构造函数或方法中涉及到的JPoint；|
+|cflow(pointcuts): |比如cflow(call Animal.fly): 标识调用Animal.fly函数时所包含的JPoint，包含fly的call这个JPoint本身；|
+|cflowbelow(pointcuts): |比如cflowbelow(call Animal.fly): 标识调用Animal.fly函数时所包含的JPoint，但不包含fly的call这个JPoint本身；|
+|this(Type): |JPoint所在的对象是否满足instanceof Type条件（注：不能使用通配符，与within类似，但within包含内部类， 而this不包含)；|
+|target(Type): |与this相对，表示Pointcut所在对象是否满足instanceof Type条件(注：不能使用通配符);|
+|args(TypeSignature):|Constructor Signature\|Method Signature的参数类型，比如args(int,..)表示第一个参数是int, 后面的参数个数和类型不限；|
+|if(BooleanExpression): |满足表达式的 Join Point，表达式只能使用静态属性、Pointcuts 或 Advice 暴露的参数、thisJoinPoint 对象。|
 
-aspectj示例:
-execution(MethodPattern)（JPoint方法执行）
+#### Advice语法:
+|语法|描述|
+| ----- |:-----:|
+|Before(Pointcut):| 在执行JPoint之前;|
+|After(Pointcut): |在执行JPonit之后;|
+|Aroud(Pointcut): |替换原需要执行的代码，如需执行原代码，需调用joinPoint.proceed()方法，不可与Before和After同时使用;|
+|AfterReturning(Pointcut): |JPoint 为方法调用且正常 return 时，不指定返回类型时匹配所有类型;|
+|AfterThrowing(Pointcut): |JPoint 为方法调用且抛出异常时，不指定异常类型时匹配所有类型;|
+
+#### aspectj示例:
+> execution(MethodPattern)（JPoint方法执行）
+```java
 @Aspect
 public class OtherJpoint {
 
@@ -169,15 +143,21 @@ if (joinPoint.getArgs() != null && joinPoint.getArgs().length > 0) {
         }
  }
 }
+```
 该切入点执行的效果为：在所有实现View的点击事件的onClick方法内部代码执行之前打印View的信息
-execution(ConstructorPattern)（JPoint构造器执行）
+
+> execution(ConstructorPattern)（JPoint构造器执行）
+```java
 @Before("execution(com.aspectj.demo.bean.Person.new(..))")
 public void onStartPageConstructor(JoinPoint joinPoint) throws Throwable {
     Log.d("aopLog", "this:" + joinPoint.getThis().toString());
 }
+```
 该切入点执行的效果为：在所有创建Person对象的时候，执行Person对象构造函数之前打印该对象的信息；
 注意： 构造函数执行， 没有返回值类型， 且函数名只能是new
-call(MethodPattern)  (JPoint方法调用)
+
+> call(MethodPattern)  (JPoint方法调用)
+```java
 @Before("call(* com.aspectj.demo.StartPage.setButtonOneData(..))")
 public void onCallStartPagesetButtonOneData(JoinPoint joinPoint) throws Throwable {
 if (joinPoint.getArgs() != null && joinPoint.getArgs().length > 0) {
@@ -185,26 +165,38 @@ if (joinPoint.getArgs() != null && joinPoint.getArgs().length > 0) {
  Log.d("aopLog", "button_text: " + object.toString());
  }
 }
+```
 该切入点的效果为：在所有调用com.aspectj.demo.StartPage.setButtonOneData(..)该方法的代码之前打印传递给该方法的型参
-staticinitialization(TypePattern)  (JPoint类初始化)
+
+> staticinitialization(TypePattern)  (JPoint类初始化)
+```java
 @Before("staticinitialization(com.aspectj.demo.bean.Person)")
 public void onStartPageStaticinitialization(JoinPoint joinPoint) throws Throwable {
     Log.d("aopLog", "staticinitialization_this:" + joinPoint.getStaticPart().toString());
 }
+```
 该切入点的效果为：在Person初始化之前打印信息
-get(FieldPattern)  (JPoint属性读操作)
+
+> get(FieldPattern)  (JPoint属性读操作)
+```java
 @Before("get(* com.aspectj.demo.bean.Person.*)")
 public void getPersonField(JoinPoint joinPoint) throws Throwable {
     Log.d("aopLog", "getPersonField:" + joinPoint.getStaticPart().toString());
 }
+```
 该切入点的效果为，在所有获取Person对象属性的代码之前插入打印信息
-set(FieldPattern)  (JPoint属性写操作)
+
+> set(FieldPattern)  (JPoint属性写操作)
+```java
 @Before("set(* com.aspectj.demo.bean.Person.*)")
 public void setPersonField(JoinPoint joinPoint) throws Throwable {
     Log.d("aopLog", "setPersonField:" + joinPoint.getStaticPart().toString());
 }
+```
 该切入点的效果为，在所有设置Person对象属性值的代码之前插入打印信息
-handler(TypePattern)  (JPoint例外处理执行)
+
+> handler(TypePattern)  (JPoint例外处理执行)
+```java
 private fun showToast(message: String) {
 if (message.isNotEmpty()) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
@@ -219,9 +211,12 @@ throw IllegalArgumentException()
 public void handlerIllegalArgumentException(JoinPoint joinPoint) throws Throwable {
     Log.d("aopLog", "handlerIllegalArgumentException:" + joinPoint.getStaticPart().toString());
 }
+```
 该切入点的效果为，在所有编译时匹配的IllegalArgumentException异常，将在异常抛出前，打印信息；
 注意： handler只支持Before，而且只能匹配编译期异常捕获，并且不能捕获该异常的子类。
-within(TypePattern)  
+
+> within(TypePattern)
+```java
 @Pointcut("within(com.aspectj.demo.StartPage)")
 public void withinStartPage() {
 }
@@ -234,9 +229,11 @@ public void showToast() {
 public void withinStartPageAndShowToast(JoinPoint joinPoint) throws Throwable {
     Log.d("aopLog", "withinStartPageAndShowToast:" + joinPoint.getStaticPart().toString());
 }
+```
 该切入点的效果为，在StartPage类中调用Toast方法之前打印相关信息
 
-withincode(MethodPattern) 
+> withincode(MethodPattern)
+```java
 @Pointcut("withincode(* com.aspectj.demo.StartPage.showToast(..))")
 public void inStartPageShowToast() {
 }
@@ -247,9 +244,11 @@ public void showToast() {
 public void inStartPageShowToastAndShowToast(JoinPoint joinPoint) throws Throwable {
     Log.d("aopLog", "inStartPageShowToastAndShowToast: " + joinPoint.getSignature().getName());
 }
+```
 该切入点的效果为：在com.aspectj.demo.StartPage.showToast()方法中调用了Toast方法之前打印相关信息
 
-注解
+> 注解
+```java
 @Retention(RetentionPolicy.CLASS)
 @Target({ElementType.METHOD})
 public @interface ActivityOnCreate {
@@ -266,7 +265,8 @@ long startTime = System.currentTimeMillis();
  String key = joinPoint.getSignature().getName();
  Log.d("aopLog", "execution_onActivityMethodAround: " + joinPoint.getThis().getClass().getSimpleName() + "_" + key + ":" + (endTime - startTime));
 }
+```
 该切入点的效果为，在使用了ActivityOnCreate 注解的目标方法执行前进行拦截并实行相关操作
 
-总结：
+## 总结：
 本篇介绍，对AOP及Aspectj的介绍仅仅只涉及到到入门知识，更输入的学习，欢迎大家一起加入。
