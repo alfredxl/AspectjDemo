@@ -263,7 +263,7 @@ long startTime = System.currentTimeMillis();
  joinPoint.proceed();
  long endTime = System.currentTimeMillis();
  String key = joinPoint.getSignature().getName();
- Log.d("aopLog", "execution_onActivityMethodAround: " + joinPoint.getThis().getClass().getSimpleName() + "_" + key + ":" + (endTime - startTime));
+ Log.d("aopLog", "execution_onActivityMethodAround: " + joinPoint.getThis().getClass().getSimpleName() + "_" <br>+ key + ":" + (endTime - startTime));
 }
 ```
 该切入点的效果为，在使用了ActivityOnCreate 注解的目标方法执行前进行拦截并实行相关操作
