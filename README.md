@@ -54,7 +54,7 @@ apply plugin: 'android-aspectjx'
 |Advice|常见的有 Before、After、Around 等，表示代码执行前、执行后、替换目标代码，也就是在 Pointcut 何处注入代码。|
 |Aspect|Pointcut 和 Advice 合在一起称作 Aspect。|
 
-#### Pointcut语法:
+#### JPoint语法:
 |符号|描述|
 | ----- |:-----:|
 |\*|表示任何数量的字符,除了(.)|
@@ -93,7 +93,7 @@ apply plugin: 'android-aspectjx'
 |FieldPattern:  |[!] [@Annotation] [public,protected,private] [static] [final] 属性类型 [类名.]属性名|
 |TypePattern:  |其他 Pattern 涉及到的类型规则也是一样，可以使用 '!'、''、'..'、'+'，'!' 表示取反，'' 匹配除 . 外的所有字符串，'*' 单独使用事表示匹配任意类型，'..' 匹配任意字符串，'..' 单独使用时表示匹配任意长度任意类型，'+' 匹配其自身及子类，还有一个 '...'表示不定个数|
 
-#### JPoint语法:
+#### Pointcut语法:
 |语法|描述|
 | ----- |:-----:|
 |execution(MethodPattern)|方法执行|
@@ -106,7 +106,7 @@ apply plugin: 'android-aspectjx'
 |handler(TypePattern)|异常处理|
 |adviceexecution()|所有 Advice 执行|
 
-#### 间接选择JPonit语法：
+#### 间接选择Pointcut语法：
 |语法|描述|
 | ----- |:-----:|
 |within(TypePattern):  |TypePattern表示某个包或者类中包含的JPoint，可以使用通配符；|
